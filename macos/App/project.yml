@@ -1,0 +1,40 @@
+name: ChosConvert
+options:
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+  developmentLanguage: en
+configs:
+  Debug: debug
+  Release: release
+configFiles:
+  Debug: Config/Debug.xcconfig
+  Release: Config/Release.xcconfig
+packages:
+  ChosConvertKit:
+    path: ../ChosConvertKit
+targets:
+  ChosConvert:
+    type: application
+    platform: macOS
+    configFiles:
+      Debug: Config/Debug.xcconfig
+      Release: Config/Release.xcconfig
+    sources:
+      - path: Sources
+        excludes: ["*.entitlements", "Info.plist"]
+      - path: Resources
+    dependencies:
+      - package: ChosConvertKit
+        product: ChosConvertUI
+      - package: ChosConvertKit
+        product: ChosConvertKit
+schemes:
+  ChosConvert:
+    build:
+      targets:
+        ChosConvert: all
+    run:
+      config: Debug
+    archive:
+      config: Release

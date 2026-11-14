@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Release: App Sandbox with the minimum file access ChosConvert needs. -->
+	<key>com.apple.security.app-sandbox</key>
+	<true/>
+	<!-- Files and folders the user explicitly drops, opens or picks. -->
+	<key>com.apple.security.files.user-selected.read-write</key>
+	<true/>
+	<!-- Remember folders the user granted for saving results. -->
+	<key>com.apple.security.files.bookmarks.app-scope</key>
+	<true/>
+	<!-- No network entitlement: ChosConvert works fully offline. -->
+</dict>
+</plist>

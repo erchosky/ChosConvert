@@ -1,0 +1,12 @@
+// Single source of truth for product identity. Rename the product here (and in
+// branding/brand.json) before publishing; nothing else hardcodes these values.
+CC_PRODUCT_NAME = ChosConvert
+CC_BUNDLE_ID = app.chosconvert.mac
+CC_COPYRIGHT = © 2026 ChosConvert contributors
+CC_SUPPORT_URL = https://github.com/chosconvert/chosconvert-macos
+
+PRODUCT_NAME = $(CC_PRODUCT_NAME)
+PRODUCT_BUNDLE_IDENTIFIER = $(CC_BUNDLE_ID)
+MARKETING_VERSION = 0.1.0
+CURRENT_PROJECT_VERSION = 1
+MACOSX_DEPLOYMENT_TARGET = 15.0

@@ -1,0 +1,14 @@
+# Rust
+core/target/
+# Swift / Xcode
+.build/
+.swiftpm/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+macos/App/ChosConvert.xcodeproj/
+macos/ChosConvertKit/Frameworks/
+# OS
+.DS_Store
+# Local tooling
+*.log

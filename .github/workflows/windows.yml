@@ -1,0 +1,33 @@
+name: Windows (core)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  core:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Rust stable
+        run: rustup default stable && rustup component add clippy rustfmt
+      - name: FFmpeg (for integration tests)
+        run: choco install ffmpeg -y --no-progress
+      - name: fmt / clippy / test
+        working-directory: core
+        run: |
+          cargo fmt --check
+          cargo clippy --all-targets -- -D warnings
+          cargo test
+      - name: Build DLL (x64 + ARM64)
+        working-directory: core
+        run: |
+          rustup target add aarch64-pc-windows-msvc
+          cargo build --release -p chosconvert-ffi
+          cargo build --release -p chosconvert-ffi --target aarch64-pc-windows-msvc
+      # The WinUI 3 app (.NET tests, MSIX validation) joins this workflow in Phase 5.

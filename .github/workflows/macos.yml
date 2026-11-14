@@ -1,0 +1,44 @@
+name: macOS
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-test:
+    runs-on: macos-latest
+    timeout-minutes: 45
+    env:
+      CC_SCRATCH: ${{ runner.temp }}/cc-build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Toolchains
+        run: |
+          brew install rustup cbindgen xcodegen ffmpeg
+          echo "/opt/homebrew/opt/rustup/bin" >> "$GITHUB_PATH"
+      - name: Rust stable
+        run: rustup default stable && rustup component add clippy rustfmt && rustup target add x86_64-apple-darwin
+      - name: Lint & checks
+        run: |
+          python3 scripts/check-l10n.py
+          scripts/check-offline.sh
+      - name: Tests (Rust core + Swift package)
+        run: scripts/test-macos.sh
+      - name: Build app (Debug)
+        run: |
+          cd macos/App && xcodegen generate
+          xcodebuild -project ChosConvert.xcodeproj -scheme ChosConvert -configuration Debug \
+            -derivedDataPath "$CC_SCRATCH/xcode" build
+      - name: Release validation (universal, sandboxed, ad-hoc signed)
+        run: |
+          UNIVERSAL=1 scripts/build-core-macos.sh
+          xcodebuild -project macos/App/ChosConvert.xcodeproj -scheme ChosConvert -configuration Release \
+            -derivedDataPath "$CC_SCRATCH/release" build
+          APP="$CC_SCRATCH/release/Build/Products/Release/ChosConvert.app"
+          lipo -archs "$APP/Contents/MacOS/ChosConvert" | grep -q "x86_64 arm64"
+          codesign -d --entitlements - "$APP" 2>&1 | grep -q "app-sandbox"
+          ! codesign -d --entitlements - "$APP" 2>&1 | grep -q "network"

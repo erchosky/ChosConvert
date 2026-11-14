@@ -1,0 +1,7 @@
+#include "Base.xcconfig"
+
+// Debug builds run outside App Sandbox so a developer-installed FFmpeg (e.g. Homebrew) can be
+// used. Release builds are sandboxed. See DECISIONS.md (ADR-0007).
+CODE_SIGN_ENTITLEMENTS = Sources/ChosConvert-Debug.entitlements
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG CC_DEV
+ONLY_ACTIVE_ARCH = YES

@@ -1,0 +1,18 @@
+[package]
+name = "chosconvert-core"
+description = "Portable conversion planning, detection and job logic for ChosConvert."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+publish.workspace = true
+
+[dependencies]
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+uuid.workspace = true
+libwebp-sys.workspace = true
+
+[lints]
+workspace = true

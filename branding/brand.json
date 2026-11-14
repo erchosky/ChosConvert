@@ -1,0 +1,11 @@
+{
+  "schema": "chosconvert.brand",
+  "version": 1,
+  "productName": "ChosConvert",
+  "status": "provisional",
+  "macos": { "bundleIdentifier": "app.chosconvert.mac", "xcconfig": "macos/App/Config/Brand.xcconfig" },
+  "windows": { "packageIdentityName": "ChosConvert.App", "publisher": "TBD" },
+  "copyright": "© 2026 ChosConvert contributors",
+  "urls": { "repositoryMac": "https://github.com/chosconvert/chosconvert-macos", "repositoryWindows": "https://github.com/chosconvert/chosconvert-windows" },
+  "colors": { "accentLight": "#4F54DB", "accentDark": "#8F99FF" }
+}
