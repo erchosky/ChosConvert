@@ -1,65 +1,64 @@
 <p align="center">
-  <img src="macos/App/Resources/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png" width="128" alt="ChosConvert icon">
+  <img src="macos/App/Resources/Assets.xcassets/AppIcon.appiconset/icon_128x128@2x.png" width="128" alt="Icono de ChosConvert">
 </p>
 
-<h1 align="center">ChosConvert</h1>
-<p align="center"><b>Drop a file. Say what you want. Done — on your Mac, offline.</b></p>
-<p align="center">
-  <img alt="macOS 15+" src="https://img.shields.io/badge/macOS-15%2B-4F54DB">
-  <img alt="Offline" src="https://img.shields.io/badge/network-none-2ea44f">
-  <img alt="Status" src="https://img.shields.io/badge/status-pre--release-orange">
-</p>
+# ChosConvert
 
-ChosConvert is a native, local-first file toolbox. Instead of asking which codec, CRF or container
-you need, it asks **what you want to do** — *make it smaller*, *fit under 10 MB*, *extract the
-audio*, *remove the location* — and works out the technical details. An Advanced mode exposes
-codecs, encoders, bitrates and more when you want them.
+**Convierte, comprime y prepara archivos desde tu Mac, sin conexión.**
 
-| Drop anything | Intent-first actions |
+ChosConvert es una aplicación nativa que organiza las conversiones según lo que quieres conseguir: reducir el tamaño, ajustar un vídeo a un límite, extraer el audio o eliminar la ubicación de una foto. El modo avanzado permite elegir códecs, codificadores y tasas de bits.
+
+[Funciones](#funciones) · [Privacidad](#privacidad) · [Arquitectura](#arquitectura) · [Compilación](#compilación) · [Documentación](#documentación)
+
+## Vista previa
+
+| Archivos y acciones | Configuración y resultados |
 | --- | --- |
-| ![Drop zone](docs/screenshots/home-empty-light.png) | ![Actions for a video](docs/screenshots/home-video-light.png) |
-| **Plan before you convert** | **Honest results** |
-| ![Configure](docs/screenshots/configure-remove-location-dark.png) | ![Queue](docs/screenshots/queue-dark.png) |
+| ![Zona para soltar archivos](docs/screenshots/home-empty-light.png) | ![Acciones disponibles para un vídeo](docs/screenshots/home-video-light.png) |
+| ![Configuración para eliminar la ubicación](docs/screenshots/configure-remove-location-dark.png) | ![Cola de conversiones](docs/screenshots/queue-dark.png) |
 
-*Screenshots are rendered from the real views by `SnapshotRenderer` (no mock-ups).*
+Las capturas se generan con las vistas reales mediante `SnapshotRenderer`.
 
-## What works today (v0.1, macOS)
-- **Images** — JPEG, PNG, HEIC, AVIF, TIFF, BMP, GIF, **WebP** (bundled libwebp). Resize,
-  web-optimize (WebP · 1920 px · sRGB · no metadata), alpha flattening, **lossless removal of GPS
-  or all metadata** (orientation kept).
-- **Video** — convert by **remuxing whenever possible** (no quality loss), make smaller with
-  hardware HEVC/H.264 (VideoToolbox) and automatic software fallback, **target size** with
-  verification and refinement, extract audio without re-encoding, GIF, metadata removal.
-- **Audio** — MP3, AAC/M4A, FLAC, ALAC, Opus, WAV, AIFF; bit depth preserved.
-- **Queue** — backpressure for big batches, real progress (pass/attempt/speed/ETA), cancel,
-  retry, before/after sizes, reveal, drag the result into any app.
-- **Safety** — content sniffing (a renamed `.exe` is never treated as a photo), damaged-file
-  detection, originals never touched, atomic no-clobber output, private temp space.
-- **Edge Dock** — drag files toward the screen edge from any app: a thin strip appears, hover
-  for the actions that fit those files, drop to start. No window, no focus change, no extra
-  permissions. Multi-monitor and Spaces aware. [Details](docs/EDGE_DOCK.md).
-- **Command palette (⌘K)**, a **menu bar extra** (recent results, Edge Dock switch) and
-  notifications when long conversions finish in the background.
-- **English & Spanish.** Light & dark.
+## Funciones
 
-Coming next: PDF tools, local OCR, recipes, history, share-ready presets —
-see [ROADMAP.md](ROADMAP.md).
+Esta entrega corresponde a la versión preliminar 0.1 para macOS.
 
-## Privacy
-Your files never leave your computer. No account, no telemetry, no network access — Release
-builds are sandboxed without the network entitlement. Details: [PRIVACY.md](PRIVACY.md).
+- **Imágenes:** JPEG, PNG, HEIC, AVIF, TIFF, BMP, GIF y WebP mediante libwebp incluida. Redimensionado, optimización para web, tratamiento de transparencia y eliminación sin pérdida de GPS o metadatos, conservando la orientación.
+- **Vídeo:** cambio de contenedor sin recodificar cuando es posible; compresión HEVC/H.264 con VideoToolbox y alternativa por software; tamaño objetivo con comprobación y ajuste; extracción de audio, GIF y eliminación de metadatos.
+- **Audio:** MP3, AAC/M4A, FLAC, ALAC, Opus, WAV y AIFF, conservando la profundidad de bits.
+- **Cola:** progreso por pasada e intento, velocidad, tiempo restante, cancelación, reintentos y comparación de tamaños. Permite mostrar el resultado en Finder o arrastrarlo a otra aplicación.
+- **Protección de originales:** detección por contenido, comprobación de archivos dañados, temporales privados y escritura de salida sin sobrescribir archivos existentes.
+- **Edge Dock:** acerca archivos al borde de la pantalla para mostrar acciones sin abrir la ventana principal. Compatible con varios monitores y Spaces. [Guía de Edge Dock](docs/EDGE_DOCK.md).
+- **Accesos rápidos:** paleta de comandos con ⌘K, menú en la barra superior y notificaciones al terminar conversiones largas.
+- **Interfaz:** español e inglés, con temas claro y oscuro.
 
-## Architecture
-Native SwiftUI app over a portable **Rust core** (detection, planning, FFmpeg execution, target-size
-optimizer, safe output) exposed through a small JSON-based C ABI, so the upcoming Windows (WinUI 3)
-app shares the same engine logic. See [ARCHITECTURE.md](ARCHITECTURE.md) and [DECISIONS.md](DECISIONS.md).
+Las herramientas PDF, OCR local, recetas, historial y nuevos ajustes predefinidos están en la [hoja de ruta](ROADMAP.md).
 
-## Build
+## Privacidad
+
+El procesamiento se realiza en el equipo, sin cuenta ni telemetría. Las compilaciones de distribución utilizan el entorno aislado de macOS sin permiso de red. Consulta [PRIVACY.md](PRIVACY.md).
+
+## Arquitectura
+
+La interfaz está construida con SwiftUI. Un núcleo portable en Rust se encarga de detectar archivos, planificar conversiones, ejecutar FFmpeg, ajustar tamaños y escribir resultados de forma segura. La comunicación utiliza una interfaz C con mensajes JSON.
+
+La futura aplicación Windows con WinUI 3 está planteada sobre el mismo motor; no equivale a una versión Windows terminada. Detalles en [ARCHITECTURE.md](ARCHITECTURE.md) y [DECISIONS.md](DECISIONS.md).
+
+## Compilación
+
+La aplicación está orientada a macOS 15 o posterior. Revisa las herramientas y dependencias exactas en [BUILDING.md](BUILDING.md).
+
 ```bash
 scripts/test-macos.sh
 ```
-Full instructions: [BUILDING.md](BUILDING.md). Release/signing: [RELEASE.md](RELEASE.md).
 
-## Contributing & security
-[CONTRIBUTING.md](CONTRIBUTING.md) · [SECURITY.md](SECURITY.md) · [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) ·
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
+Para empaquetado y firma, consulta [RELEASE.md](RELEASE.md).
+
+## Documentación
+
+- [Guía de compilación](BUILDING.md)
+- [Arquitectura](ARCHITECTURE.md) y [decisiones técnicas](DECISIONS.md)
+- [Hoja de ruta](ROADMAP.md)
+- [Cómo contribuir](CONTRIBUTING.md)
+- [Seguridad](SECURITY.md) y [código de conducta](CODE_OF_CONDUCT.md)
+- [Componentes de terceros](THIRD_PARTY_NOTICES.md)
